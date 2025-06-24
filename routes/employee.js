@@ -9,5 +9,5 @@ router.route("/")
 .post(authMiddleware.authMiddleware,verify(RolesList.user),employee.postResponse)
 router.put("/user/:id",authMiddleware.authMiddleware,verify(RolesList.user,RolesList.admin),employee.putResponse)
 
-router.delete("/user/:index",employee.deleteResponse)
+router.delete("/user/:id",authMiddleware.authMiddleware,verify(RolesList.user,RolesList.admin),employee.deleteResponse)
 module.exports=router;

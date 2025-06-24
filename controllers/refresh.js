@@ -8,7 +8,7 @@ const userData={
     }
 }
 const { ref } = require('process');
-require('dotenv').config();
+
 
 const refreshing= function(req,res,next){
     const refreshCookie= req.cookies.jwt;

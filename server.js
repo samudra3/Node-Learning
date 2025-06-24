@@ -1,8 +1,12 @@
+require('dotenv').config();
 const cookieParser = require('cookie-parser');
 const express= require('express');
 const app= express();
 const path=require('path');
 const cors=require('cors');
+const mongoose=require('mongoose');
+const dbConnection=require('./config/dbConnect.js');
+dbConnection();
 const PORT=process.env.PORT || 4000;
 app.use((req,res,next)=>{
   console.log(`${req.url} ${req.method}`);
@@ -69,4 +73,7 @@ app.use((err,req,res,next)=>{
 // app.get('/*',(req,res)=>{
 //   res.status(404).send('404 not found');
 // })
-app.listen(PORT,()=>console.log('server is listening on the port '+PORT));
+mongoose.connection.once('open',()=>{
+  console.log('database connected');
+  app.listen(PORT,()=>console.log('server is listening on the port '+PORT));
+})

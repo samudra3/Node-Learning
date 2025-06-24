@@ -1,31 +1,30 @@
 let info= require("../models/info.json");
-
+const employeeData=require('../models/employeeData');
+const { rawListeners } = require("../models/UserData");
 const getResponse=(req,res)=>{
     res.json(info);
     }
-const postResponse=(req,res)=>{
-    console.log('running inside the postresponse')
-    console.log(req.body.userName)
-
-    info[info.length]={"username":req.body.userName,"userId":req.body.userId};
-
-    res.json(info[info.length-1]);
+const postResponse= async (req,res)=>{
+    const {username,userId}=req.body;
+const newEmployee= await employeeData.create({username,userId});
+if(newEmployee)return res.status(200).json({'employee':newEmployee});
+console.log('error during new employee creation');
     }
-const putResponse=(req,res)=>{
-console.log(req.params.id)
-const targetUser=info.find(item=>item.userId.toString(zzzzzzzzz)===req.params.id);
-console.log(targetUser)
-   const {userName,userId}=req.body;
-   console.log(userName)
+const putResponse=async (req,res)=>{
+    console.log('inside the put of employee')
+const {id}=req.params;
+const targetUser= await employeeData.findById(id).exec();
+console.log(targetUser);
+   const {username,userId}=req.body;
+//making changes to the provided id document
+const updateUser=await employeeData.updateOne(targetUser,{username,userId});
 
-targetUser.userName=userName;
-targetUser.userId=userId;
-res.json(info);
+res.json(updateUser);
    };
-const deleteResponse=(req,res)=>{
-    const {index}=req.params;
-    info[index]={};
-    res.json(info);
+const deleteResponse= async (req,res)=>{
+    const {id}=req.params;
+   const deletedUser=  await employeeData.deleteOne({_id:id});
+   res.json(deletedUser);
     }
     module.exports={
         getResponse,

@@ -1,5 +1,5 @@
 const jwt=require('jsonwebtoken');
-require('dotenv').config();
+
 const userData={
     user: require('../models/data.json'),
     setUser:function(value){
